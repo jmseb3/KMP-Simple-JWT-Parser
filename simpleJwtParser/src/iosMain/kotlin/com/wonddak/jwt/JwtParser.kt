@@ -9,12 +9,20 @@ import platform.Foundation.create
 import platform.Foundation.stringByPaddingToLength
 
 actual class JwtParser {
-
     actual fun parseToJsonObject(jwtToken: String): JsonObject? {
-        val jwt = jwtToken as NSString
-        val segments = jwt.componentsSeparatedByString(".") as List<NSString>
-
-        return decodeJWTPart(segments[1]).toJsonObject()
+        return getPayload(jwtToken as NSString)
+    }
+    private fun getPayload(jwt: NSString): JsonObject? {
+        val jwtParts = jwt.componentsSeparatedByString(".") as List<NSString>
+        try {
+            if (jwtParts.size != JWT.PARTS) {
+                throw Exception()
+            }
+            return decodeJWTPart(jwtParts[JWT.PAYLOAD]).toJsonObject()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 
     private fun decodeJWTPart(value: NSString): Map<String, Any> {
