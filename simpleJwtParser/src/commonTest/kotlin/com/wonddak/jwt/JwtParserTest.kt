@@ -1,14 +1,12 @@
 package com.wonddak.jwt
 
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.test.assertTrue
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+
 
 class JwtParserTest {
-    //TODO Android Base64 Mock
-
     companion object {
         const val TEST_TOKEN =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IldvbmRkYWsiLCJpYXQiOjE1MTYyMzkwMjIsInRlc3QiOjEyM30.ZbUhYv6Jf4AJW4os-ukU28sojXvJGzKwuxMWkfc8Poo"
@@ -22,44 +20,33 @@ class JwtParserTest {
          */
     }
 
-    private lateinit var jwtParser: JwtParser
-    private lateinit var jsonObject: JsonObject
+    private val jwtParser = JwtParser()
+    private val jsonObject = jwtParser.parseToJsonObject(TEST_TOKEN)!!
 
-    @BeforeTest
-    fun setup() {
-        jwtParser = JwtParser()
-        jsonObject = jwtParser.parseToJsonObject(TEST_TOKEN)!!
+    private fun getItem(key: String, default: Any): String {
+        val item = jsonObject.safeGet(key, default).jsonPrimitive.content
+        println(">>>>> key : $key >> getItem : $item")
+        return item
     }
 
     @Test
-    fun test1() {
-        assertTrue(
-            jsonObject.safeGet("test", "123").jsonPrimitive.content == "123",
-            "test is not 123"
-        )
+    fun testForTestKey() {
+        val item = getItem("test","123")
+        assertEquals(item,"123")
+        assertNotEquals(item,"1233")
     }
 
     @Test
-    fun test2() {
-        assertTrue(
-            jsonObject.safeGet("name", "").jsonPrimitive.content == "Wonddak",
-            "name is not Wonddak"
-        )
+    fun testForNameKey() {
+        val item = getItem("name","")
+        assertEquals(item,"Wonddak")
+        assertNotEquals(item,"Wonddak123")
     }
 
     @Test
-    fun test3() {
-        assertTrue(
-            jsonObject.safeGet("test333", "").jsonPrimitive.content == "",
-            "test33 is not empty"
-        )
-    }
-
-    @Test
-    fun test4() {
-        assertTrue(
-            jsonObject.safeGet("test333", "123").jsonPrimitive.content != "",
-            "test333 is 123"
-        )
+    fun testForNotExistKey() {
+        val item = getItem("noneKey","notExist")
+        assertEquals(item,"notExist")
+        assertNotEquals(item,"")
     }
 }
