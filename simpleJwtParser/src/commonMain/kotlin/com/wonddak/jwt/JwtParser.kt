@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonObject
  * Parse JWT Token For Payload
  *
  */
-expect class JwtParser() {
+expect object JwtParser {
 
     /**
      * @param[jwtToken] : JWT Token

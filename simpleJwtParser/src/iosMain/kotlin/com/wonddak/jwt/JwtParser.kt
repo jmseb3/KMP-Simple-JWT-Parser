@@ -8,7 +8,7 @@ import platform.Foundation.componentsSeparatedByString
 import platform.Foundation.create
 import platform.Foundation.stringByPaddingToLength
 
-actual class JwtParser {
+actual object JwtParser {
     actual fun parseToJsonObject(jwtToken: String): JsonObject? {
         return getPayload(jwtToken as NSString)
     }

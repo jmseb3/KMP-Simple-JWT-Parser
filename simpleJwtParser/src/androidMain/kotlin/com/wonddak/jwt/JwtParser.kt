@@ -5,7 +5,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import java.nio.charset.StandardCharsets
 
-actual class JwtParser {
+actual object JwtParser {
 
     actual fun parseToJsonObject(jwtToken: String): JsonObject? {
         return getPayload(jwtToken)
