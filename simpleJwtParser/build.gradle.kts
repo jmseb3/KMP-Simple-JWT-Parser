@@ -14,14 +14,16 @@ version = "1.0.0"
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
-    android {
+    android("android") {
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
             }
         }
+        publishLibraryVariants("release")
     }
     ios()
+    iosSimulatorArm64()
 
     sourceSets {
         val commonMain by getting {
@@ -45,10 +47,6 @@ android {
     }
 }
 
-
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-}
 
 // Stub secrets to let the project sync and build without the publication values set up
 ext["signing.keyId"] = null
@@ -77,6 +75,11 @@ if (secretPropsFile.exists()) {
 
 fun getExtraString(name: String) = ext[name]?.toString()
 
+//val javadocJar by tasks.registering(Jar::class) {
+//    archiveClassifier.set("javadoc")
+//    from(tasks.dokkaHtml)
+//}
+
 publishing {
     // Configure maven central repository
     repositories {
@@ -94,35 +97,34 @@ publishing {
         }
     }
 
-    publications {
-        register<MavenPublication>("release") {
+    // Configure all publications
+    publications.withType<MavenPublication> {
+        // Provide artifacts information requited by Maven Central
+        pom {
+            name.set("simpleJwtParser")
+            description.set("Simple JWT Token parser Library for IOS and Android(KMM)")
+            url.set("https://github.com/jmseb3/KMM-Simple-JWT-Parser")
 
-            // Provide artifacts information requited by Maven Central
-            pom {
-                name.set("simpleJwtParser")
-                description.set("Simple JWT Token parser Library for IOS and Android(KMM)")
-                url.set("https://github.com/jmseb3/KMM-Simple-JWT-Parser")
-
-                licenses {
-                    license {
-                        name.set("Apache License 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("jmseb3")
-                        name.set("WonDDak")
-                        email.set("jmseb3@naver.com")
-                    }
-                }
-                scm {
-                    url.set("https://github.com/jmseb3/KMM-Simple-JWT-Parser.git")
-                    connection.set("git@github.com:jmseb3/KMM-Simple-JWT-Parser.git")
+            licenses {
+                license {
+                    name.set("Apache License 2.0")
+                    url.set("http://www.apache.org/licenses/LICENSE-2.0")
                 }
             }
+            developers {
+                developer {
+                    id.set("jmseb3")
+                    name.set("WonDDak")
+                    email.set("jmseb3@naver.com")
+                }
+            }
+            scm {
+                url.set("https://github.com/jmseb3/KMM-Simple-JWT-Parser.git")
+                connection.set("git@github.com:jmseb3/KMM-Simple-JWT-Parser.git")
+            }
         }
-    } }
+    }
+}
 
 // Signing artifacts. Signing.* extra properties values will be used
 signing {

@@ -20,8 +20,7 @@ class JwtParserTest {
          */
     }
 
-    private val jwtParser = JwtParser()
-    private val jsonObject = jwtParser.parseToJsonObject(TEST_TOKEN)!!
+    private val jsonObject = JwtParser.parseToJsonObject(TEST_TOKEN)!!
 
     private fun getItem(key: String, default: Any): String {
         val item = jsonObject.safeGet(key, default).jsonPrimitive.content
