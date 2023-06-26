@@ -1,12 +1,15 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("maven-publish")
 }
+
+group = "com.github.jmseb3"
+version = "1.0.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
-
     android {
         compilations.all {
             kotlinOptions {
@@ -14,17 +17,7 @@ kotlin {
             }
         }
     }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { target ->
-        target.binaries.framework {
-            baseName = "jwt"
-        }
-
-    }
+    ios()
 
     sourceSets {
         val commonMain by getting {
@@ -44,6 +37,6 @@ android {
     namespace = "com.wonddak.jwt"
     compileSdk = 33
     defaultConfig {
-        minSdk = 23
+        minSdk = 21
     }
 }
