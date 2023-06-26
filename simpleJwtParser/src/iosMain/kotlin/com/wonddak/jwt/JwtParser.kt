@@ -1,6 +1,5 @@
 package com.wonddak.jwt
 
-import com.wonddak.jwt.toJsonObject
 import kotlinx.serialization.json.*
 import platform.Foundation.NSData
 import platform.Foundation.NSJSONSerialization
