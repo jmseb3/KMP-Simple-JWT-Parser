@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
 }
@@ -22,7 +23,8 @@ kotlin {
         }
         publishLibraryVariants("release")
     }
-    ios()
+    iosArm64()
+    iosX64()
     iosSimulatorArm64()
 
     sourceSets {
@@ -75,10 +77,23 @@ if (secretPropsFile.exists()) {
 
 fun getExtraString(name: String) = ext[name]?.toString()
 
-//val javadocJar by tasks.registering(Jar::class) {
-//    archiveClassifier.set("javadoc")
-//    from(tasks.dokkaHtml)
-//}
+val dokkaOutputDir = "$buildDir/dokka"
+tasks.dokkaHtml {
+    outputDirectory.set(file(dokkaOutputDir))
+}
+
+val deleteDokkaOutputDir by tasks.register<Delete>("deleteDokkaOutputDirectory") {
+    delete(dokkaOutputDir)
+}
+
+val javadocJar = tasks.register<Jar>("javadocJar") {
+    dependsOn(deleteDokkaOutputDir, tasks.dokkaHtml)
+    archiveClassifier.set("javadoc")
+    from(dokkaOutputDir)
+}
+
+println(javadocJar.get())
+
 
 publishing {
     // Configure maven central repository
@@ -99,6 +114,8 @@ publishing {
 
     // Configure all publications
     publications.withType<MavenPublication> {
+        artifact(javadocJar.get())
+
         // Provide artifacts information requited by Maven Central
         pom {
             name.set("simpleJwtParser")
