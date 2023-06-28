@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import java.util.Properties
 
 plugins {
@@ -92,9 +91,6 @@ val javadocJar = tasks.register<Jar>("javadocJar") {
     from(dokkaOutputDir)
 }
 
-println(javadocJar.get())
-
-
 publishing {
     // Configure maven central repository
     repositories {
@@ -143,7 +139,6 @@ publishing {
     }
 }
 
-// Signing artifacts. Signing.* extra properties values will be used
-signing {
-    sign(publishing.publications)
+project.tasks.withType(AbstractPublishToMaven::class.java).configureEach {
+    dependsOn(project.tasks.withType(Sign::class.java))
 }
