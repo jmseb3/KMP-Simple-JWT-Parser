@@ -1,14 +1,15 @@
 package com.wonddak.jwt
 
 import android.util.Base64
+import com.wonddak.jwt.model.Payload
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import java.nio.charset.StandardCharsets
 
 actual object JwtParser {
 
-    actual fun parseToJsonObject(jwtToken: String): JsonObject? {
-        return getPayload(jwtToken)
+    actual fun parseToJsonObject(jwtToken: String): Payload? {
+        return getPayload(jwtToken)?.let { Payload(it) }
     }
 
     private fun getPayload(jwt: String): JsonObject? {
