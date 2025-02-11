@@ -1,6 +1,8 @@
 [versions]
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 agp = "8.6.1"
+mavenPublish = "0.30.0"
+dokka = "2.0.0"
 
 [libraries]
 serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.1" }
@@ -9,3 +11,5 @@ serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", v
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
