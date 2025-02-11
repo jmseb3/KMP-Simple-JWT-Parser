@@ -1,5 +1,6 @@
 package com.wonddak.jwt
 
+import com.wonddak.jwt.model.Payload
 import kotlinx.serialization.json.JsonObject
 
 /**
@@ -13,7 +14,7 @@ expect object JwtParser {
      * @return JsonObject
      * @see JsonObject
      */
-    fun parseToJsonObject(jwtToken: String): JsonObject?
+    fun parseToJsonObject(jwtToken: String): Payload?
 }
 
 object JWT {

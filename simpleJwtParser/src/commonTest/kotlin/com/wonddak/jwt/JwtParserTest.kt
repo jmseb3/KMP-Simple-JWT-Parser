@@ -20,31 +20,39 @@ class JwtParserTest {
          */
     }
 
-    private val jsonObject = JwtParser.parseToJsonObject(TEST_TOKEN)!!
+    private val payload = JwtParser.parseToJsonObject(TEST_TOKEN)!!
 
-    private fun getItem(key: String, default: Any): String {
-        val item = jsonObject.safeGet(key, default).jsonPrimitive.content
-        println(">>>>> key : $key >> getItem : $item")
-        return item
+    @Test
+    fun testForIat() {
+        val item = payload.iat
+        assertEquals(item,1516239022)
+        assertNotEquals(item,0)
+    }
+
+    @Test
+    fun testForSub() {
+        val item = payload.sub
+        assertEquals(item,"1234567890")
+        assertNotEquals(item,"")
     }
 
     @Test
     fun testForTestKey() {
-        val item = getItem("test","123")
+        val item = payload.get("test","123").jsonPrimitive.content
         assertEquals(item,"123")
         assertNotEquals(item,"1233")
     }
 
     @Test
     fun testForNameKey() {
-        val item = getItem("name","")
+        val item = payload.get("name","").jsonPrimitive.content
         assertEquals(item,"Wonddak")
         assertNotEquals(item,"Wonddak123")
     }
 
     @Test
     fun testForNotExistKey() {
-        val item = getItem("noneKey","notExist")
+        val item = payload.get("noneKey","notExist").jsonPrimitive.content
         assertEquals(item,"notExist")
         assertNotEquals(item,"")
     }

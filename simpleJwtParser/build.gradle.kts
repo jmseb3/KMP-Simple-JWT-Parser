@@ -1,8 +1,12 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Properties
 
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.serialization)
     id("org.jetbrains.dokka")
     id("maven-publish")
     id("signing")
@@ -13,41 +17,50 @@ version = "1.0.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-    targetHierarchy.default()
-    android("android") {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
+    androidTarget {
         publishLibraryVariants("release")
     }
     iosArm64()
     iosX64()
     iosSimulatorArm64()
 
+//    jvm()
+//    linuxX64()
+//    macosArm64()
+//    macosX64()
+//
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmJs()
+//    js()
+
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-            }
+        commonMain.dependencies {
+            implementation(libs.serialization)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
     }
 }
 
 android {
     namespace = "com.wonddak.jwt"
-    compileSdk = 33
+    compileSdk = 35
     defaultConfig {
         minSdk = 21
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
+tasks.withType<KotlinCompile> {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_1_8
+        freeCompilerArgs.add("-Xjvm-default=all")
+    }
+}
 
 // Stub secrets to let the project sync and build without the publication values set up
 ext["signing.keyId"] = null
