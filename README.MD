@@ -1,6 +1,6 @@
-# KMM-Simple-JWT-Parser
+# KMP-Simple-JWT-Parser
 
-This library has a Simple function to import the payload part of jwt. for ios and android(kmm)
+This library has a Simple function to import the payload part of jwt. for ios and android(kmp)
 
 ![](https://img.shields.io/badge/mavencentral-1.0.0-green)
 # Setup
