@@ -14,7 +14,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.jmseb3:simpleJwtParser:1.0.0")
+                implementation("io.github.jmseb3:simpleJwtParser:2.0.0")
             }
         }
     }
@@ -23,13 +23,18 @@ kotlin {
 
 # how to use
 
-parse payload part of JWTToken to **[jsonObject](https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-json/kotlinx.serialization.json/-json-object/)**
+parse payload part of JWTToken to **[Payload Class](./simpleJwtParser/src/commonMain/kotlin/com/wonddak/jwt/model/Payload.kt)** by **[jsonObject](https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-json/kotlinx.serialization.json/-json-object/)**
 
 ~~~kotlin
-val jsonObject = JwtParser.parseToJsonObject(jwtToken)
+val payload : Payload= JwtParser.parseToJsonObject(jwtToken)
 ~~~
 
+**Payload class**  support default  key `iss`,`sub`,`aud`,`exp`,`nbf`,`iat`,`jti`
+also if u need any key use `payload.get(key,defaultValue)`
+
 also you use **safeGetMethod** like under
+
+### Support JsonObject Extension
 
 ~~~kotlin
 val typeOfLogin: String? = jsonObject.safeGet(key = "member_login_type")?.jsonPrimitive?.content
