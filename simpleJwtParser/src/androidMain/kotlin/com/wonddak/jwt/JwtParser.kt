@@ -6,8 +6,16 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import java.nio.charset.StandardCharsets
 
+/**
+ * Parse JWT Token For Payload
+ *
+ */
 actual object JwtParser {
-
+    /**
+     * @param[jwtToken] : JWT Token
+     * @return JsonObject
+     * @see JsonObject
+     */
     actual fun parseToJsonObject(jwtToken: String): Payload? {
         return getPayload(jwtToken)?.let { Payload(it) }
     }

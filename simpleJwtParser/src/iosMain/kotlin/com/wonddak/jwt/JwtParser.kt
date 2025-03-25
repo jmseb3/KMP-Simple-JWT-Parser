@@ -11,10 +11,20 @@ import platform.Foundation.componentsSeparatedByString
 import platform.Foundation.create
 import platform.Foundation.stringByPaddingToLength
 
+/**
+ * Parse JWT Token For Payload
+ *
+ */
 actual object JwtParser {
+    /**
+     * @param[jwtToken] : JWT Token
+     * @return JsonObject
+     * @see JsonObject
+     */
     actual fun parseToJsonObject(jwtToken: String): Payload? {
         return getPayload(jwtToken as NSString)?.let { Payload(it) }
     }
+
     private fun getPayload(jwt: NSString): JsonObject? {
         val jwtParts = jwt.componentsSeparatedByString(".") as List<NSString>
         try {
@@ -41,6 +51,6 @@ actual object JwtParser {
             withString = "=",
             startingAtIndex = 0u
         )
-      return NSData.create(base64Encoding = padding)
+        return NSData.create(base64Encoding = padding)
     }
 }
