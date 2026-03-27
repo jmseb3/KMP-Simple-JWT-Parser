@@ -2,7 +2,8 @@
 
 This library has a Simple function to import the payload part of jwt. for ios and android(kmp)
 
-![](https://img.shields.io/badge/mavencentral-1.0.0-green)
+![Maven Central Version](https://img.shields.io/maven-central/v/io.github.jmseb3/simpleJwtParser)
+
 # Setup
 
 this library upload on **mavenCentral**
