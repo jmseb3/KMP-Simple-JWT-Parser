@@ -1,16 +1,30 @@
 # KMP-Simple-JWT-Parser
 
-This library has a Simple function to import the payload part of jwt. for ios and android(kmp)
+A lightweight Kotlin Multiplatform (KMP) library for parsing the **payload section** of a JWT token on both Android and iOS.
+
+It provides a simple API to decode JWT payloads into a Kotlin object using `kotlinx.serialization`.
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/io.github.jmseb3/simpleJwtParser)
 
-# Setup
+---
 
-this library upload on **mavenCentral**
+# Features
 
-add dependencies for commonMain in shared Module build.gradle.kts
+- Kotlin Multiplatform support (Android / iOS)
+- Simple JWT payload parsing
+- Built with `kotlinx.serialization`
+- Access standard JWT claims easily
+- Safely read custom claims with helper extensions
 
-~~~kotlin
+---
+
+# Installation
+
+The library is published on Maven Central.
+
+Add the dependency to your `commonMain` source set:
+
+```kotlin
 kotlin {
     sourceSets {
         val commonMain by getting {
@@ -20,25 +34,86 @@ kotlin {
         }
     }
 }
-~~~
+```
 
-# how to use
+---
 
-parse payload part of JWTToken to **[Payload Class](./simpleJwtParser/src/commonMain/kotlin/com/wonddak/jwt/model/Payload.kt)** by **[jsonObject](https://kotlinlang.org/api/kotlinx.serialization/kotlinx-serialization-json/kotlinx.serialization.json/-json-object/)**
+# Usage
 
-~~~kotlin
-val payload : Payload= JwtParser.parseToJsonObject(jwtToken)
-~~~
+## Parse JWT Payload
 
-**Payload class**  support default  key `iss`,`sub`,`aud`,`exp`,`nbf`,`iat`,`jti`
-also if u need any key use `payload.get(key,defaultValue)`
+Use `JwtParser.parseToJsonObject()` to parse the payload section of a JWT token into a `Payload` object.
 
-also you use **safeGetMethod** like under
+```kotlin
+val payload: Payload = JwtParser.parseToJsonObject(jwtToken)
+```
 
-### Support JsonObject Extension
+---
 
-~~~kotlin
-val typeOfLogin: String? = jsonObject.safeGet(key = "member_login_type")?.jsonPrimitive?.content
-// or use defaultValue
-val typeOfLogin: String = jsonObject.safeGet(key = "member_login_type", defaultValue = "").jsonPrimitive.content
-~~~
+# Supported Standard Claims
+
+The `Payload` class supports the default JWT claims:
+
+- `iss` — Issuer
+- `sub` — Subject
+- `aud` — Audience
+- `exp` — Expiration Time
+- `nbf` — Not Before
+- `iat` — Issued At
+- `jti` — JWT ID
+
+---
+
+# Access Custom Claims
+
+You can also access custom claims using the `get()` function.
+
+```kotlin
+val loginType = payload.get(
+    key = "member_login_type",
+    defaultValue = ""
+)
+```
+
+---
+
+# Safe JSON Access Helpers
+
+The library provides safe extension methods for `JsonObject`.
+
+## Example
+
+```kotlin
+val typeOfLogin: String? =
+    jsonObject
+        .safeGet("member_login_type")
+        ?.jsonPrimitive
+        ?.content
+```
+
+## With Default Value
+
+```kotlin
+val typeOfLogin: String =
+    jsonObject
+        .safeGet(
+            key = "member_login_type",
+            defaultValue = ""
+        )
+        .jsonPrimitive
+        .content
+```
+
+---
+
+# Requirements
+
+- Kotlin Multiplatform
+- `kotlinx.serialization`
+
+---
+
+# License
+
+MIT License
+
