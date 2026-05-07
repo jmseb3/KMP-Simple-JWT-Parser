@@ -115,5 +115,4 @@ val typeOfLogin: String =
 
 # License
 
-MIT License
-
+Apache License
