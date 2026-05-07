@@ -1,30 +1,48 @@
-# KMP-Simple-JWT-Parser
+KMP-Simple-JWT-Parser
 
-A lightweight Kotlin Multiplatform (KMP) library for parsing the **payload section** of a JWT token on both Android and iOS.
+A lightweight Kotlin Multiplatform (KMP) library for parsing the payload section of a JWT token on both Android and iOS.
 
-It provides a simple API to decode JWT payloads into a Kotlin object using `kotlinx.serialization`.
+It provides a simple API to decode JWT payloads into a Kotlin object using kotlinx.serialization.
 
-![Maven Central Version](https://img.shields.io/maven-central/v/io.github.jmseb3/simpleJwtParser)
+⸻
 
----
+Features
 
-# Features
+* Kotlin Multiplatform support (Android / iOS)
+* Simple JWT payload parsing
+* Built with kotlinx.serialization
+* Access standard JWT claims easily
+* Safely read custom claims with helper extensions
 
-- Kotlin Multiplatform support (Android / iOS)
-- Simple JWT payload parsing
-- Built with `kotlinx.serialization`
-- Access standard JWT claims easily
-- Safely read custom claims with helper extensions
+⸻
 
----
-
-# Installation
+Installation
 
 The library is published on Maven Central.
 
-Add the dependency to your `commonMain` source set:
+Version Catalog (libs.versions.toml)
 
-```kotlin
+[versions]
+simpleJwtParser = "2.0.0"
+[libraries]
+simpleJwtParser = { module = "io.github.jmseb3:simpleJwtParser", version.ref = "simpleJwtParser" }
+
+Then add the dependency:
+
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.simpleJwtParser)
+            }
+        }
+    }
+}
+
+⸻
+
+Direct Dependency
+
 kotlin {
     sourceSets {
         val commonMain by getting {
@@ -34,66 +52,58 @@ kotlin {
         }
     }
 }
-```
 
----
+⸻
 
-# Usage
+Usage
 
-## Parse JWT Payload
+Parse JWT Payload
 
-Use `JwtParser.parseToJsonObject()` to parse the payload section of a JWT token into a `Payload` object.
+Use JwtParser.parseToJsonObject() to parse the payload section of a JWT token into a Payload object.
 
-```kotlin
 val payload: Payload = JwtParser.parseToJsonObject(jwtToken)
-```
 
----
+⸻
 
-# Supported Standard Claims
+Supported Standard Claims
 
-The `Payload` class supports the default JWT claims:
+The Payload class supports the default JWT claims:
 
-- `iss` — Issuer
-- `sub` — Subject
-- `aud` — Audience
-- `exp` — Expiration Time
-- `nbf` — Not Before
-- `iat` — Issued At
-- `jti` — JWT ID
+* iss — Issuer
+* sub — Subject
+* aud — Audience
+* exp — Expiration Time
+* nbf — Not Before
+* iat — Issued At
+* jti — JWT ID
 
----
+⸻
 
-# Access Custom Claims
+Access Custom Claims
 
-You can also access custom claims using the `get()` function.
+You can also access custom claims using the get() function.
 
-```kotlin
 val loginType = payload.get(
     key = "member_login_type",
     defaultValue = ""
 )
-```
 
----
+⸻
 
-# Safe JSON Access Helpers
+Safe JSON Access Helpers
 
-The library provides safe extension methods for `JsonObject`.
+The library provides safe extension methods for JsonObject.
 
-## Example
+Example
 
-```kotlin
 val typeOfLogin: String? =
     jsonObject
         .safeGet("member_login_type")
         ?.jsonPrimitive
         ?.content
-```
 
-## With Default Value
+With Default Value
 
-```kotlin
 val typeOfLogin: String =
     jsonObject
         .safeGet(
@@ -102,17 +112,18 @@ val typeOfLogin: String =
         )
         .jsonPrimitive
         .content
-```
 
----
+⸻
 
-# Requirements
+Requirements
 
-- Kotlin Multiplatform
-- `kotlinx.serialization`
+* Kotlin Multiplatform
+* kotlinx.serialization
 
----
+⸻
 
-# License
+License
 
-Apache License
+Licensed under the Apache License 2.0.
+
+See the LICENSE file for details.
